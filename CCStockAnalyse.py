@@ -36,6 +36,10 @@ def getTimestamp () :
 	print str(ts1000)
 		
 	return ts1000
+
+class CCKLine (object) :
+	def __init__ (self, kDict) :
+		self.__dict__.update(kDict)
 		
 class CCParam (object) :
 	def __init__ (self, stock_code, step, start, count, timestamp) :
@@ -91,7 +95,15 @@ class CCParam (object) :
 		}
 		
 		return headers
-	
+	def parseData (self, datas) :
+		index = 1
+		items = datas['mashData']
+		for item in items :
+			print index
+			
+			index = index + 1
+		
+		
 	def getSite (self, url, param) :
 		headers = self.genHeaders(url)
 		requests.Session()
@@ -100,7 +112,11 @@ class CCParam (object) :
 		r = requests.get (address, headers = headers)
 		r.encoding = r.apparent_encoding
 		html = r.text
+		#print html
 		
-		print html
+		datas = json.loads(html)
+
+		self.parseData(datas)
+		
 
 
