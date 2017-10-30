@@ -39,7 +39,28 @@ def getTimestamp () :
 
 class CCKLine (object) :
 	def __init__ (self, kDict) :
-		self.__dict__.update(kDict)
+		kline = kDict['kline']
+		date = kDict['date']
+		
+		kline['date'] = date
+		
+		'''
+		{
+		    "open": 219,
+		    "high": 222.12699890137,
+		    "low": 218.63999938965,
+		    "close": 219.58000183105,
+		    "volume": 2361823,
+		    "amount": 0,
+		    "ccl": 0,
+		    "preClose": 218.58999633789,
+		    "netChangeRatio": 0.45290519483387
+		}
+		'''
+		
+		self.__dict__.update(kline)
+		
+		#self.__dict__.update(kDict)
 		
 class CCParam (object) :
 	def __init__ (self, stock_code, step, start, count, timestamp) :
@@ -98,11 +119,40 @@ class CCParam (object) :
 	def parseData (self, datas) :
 		index = 1
 		items = datas['mashData']
+		
+		'''
+		{
+		    "open": 219,
+		    "high": 222.12699890137,
+		    "low": 218.63999938965,
+		    "close": 219.58000183105,
+		    "preClose": 218.58999633789,
+		}
+		'''
+		
+		klineList = []
+		dateList = []
+		
+		openList = []
+		highList = []
+		lowList = []
+		closeList = []
+		preCloseList = []
+		
 		for item in items :
 			print index
 			
+			kItem = CCKLine(item)
+			
+			dateList.append (kItem.date)
+			
+			openList.append(kItem.open)
+			highList.append(kItem.high)
+			lowList.append(kItem.low)
+			closeList.append(kItem.close)
+			preCloseList.append(kItem.preClose)
+
 			index = index + 1
-		
 		
 	def getSite (self, url, param) :
 		headers = self.genHeaders(url)
